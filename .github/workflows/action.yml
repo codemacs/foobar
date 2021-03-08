@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: .github/workflows/
       with:
         token: ${{ secrets.TEST }}
         name: Test Basic Success
@@ -19,7 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: .github/workflows/
       with:
         token: ${{ secrets.TEST }}
         name: Test Basic Success (Implicit)
