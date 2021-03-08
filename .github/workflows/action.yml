@@ -1,0 +1,26 @@
+name: "examples"
+on: [push, pull_request]
+
+jobs:
+  # make sure the action works on a clean machines without building
+
+  ## Basic
+  test_basic_success:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        token: ${{ secrets.TEST }}
+        name: Test Basic Success
+        conclusion: success
+
+  test_basic_success_with_output:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        token: ${{ secrets.TEST }}
+        name: Test Basic Success (Implicit)
+        conclusion: success
+        output: |
+          {"summary":"Test was a success","text_description":"This is a text description of the annotations and images\nWith more stuff\nAnd more"}
