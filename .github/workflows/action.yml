@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
       with:
-        token: ${{ secrets.TEST }}
+        #token: ${{ secrets.TEST }}
         name: Test Basic Success
         conclusion: success
 
@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
       with:
-        token: ${{ secrets.TEST }}
+        #token: ${{ secrets.TEST }}
         name: Test Basic Success (Implicit)
         conclusion: success
         output: |
