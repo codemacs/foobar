@@ -1,5 +1,5 @@
 name: "examples"
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   # make sure the action works on a clean machines without building
@@ -13,6 +13,17 @@ jobs:
         #token: ${{ secrets.TEST }}
         name: Test Basic Success
         conclusion: success
+        
+    - uses: actions/github-script@v3
+      with:
+        github-token: ${{github.token}}
+        script: |
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '👋 Thanks for reporting!'
+          })
 
   test_basic_success_with_output:
     runs-on: ubuntu-latest
