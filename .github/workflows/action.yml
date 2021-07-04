@@ -49,10 +49,12 @@ jobs:
           id: failure_step
           run: |
             ! echo "Hello"
+            echo ::set-output name=exit_status::$?
 
         - name: Check failure here
           #if: ${{ failure() }}
-          if: steps.failure_step.conclusion == 'failure'
+          #if: steps.failure_step.conclusion == 'failure'
+          if: steps.failure_step.outputs.exit_status != 0 
           uses: actions/github-script@v3
           with:
             github-token: ${{github.token}}
