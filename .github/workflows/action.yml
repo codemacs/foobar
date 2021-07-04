@@ -1,37 +1,65 @@
 name: "examples"
 on: [pull_request]
 
-jobs:
+#jobs:
   # make sure the action works on a clean machines without building
 
   ## Basic
-  test_basic_success:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        #token: ${{ secrets.TEST }}
-        name: Test Basic Success
-        conclusion: success
-        
-    - uses: actions/github-script@v3
-      with:
-        github-token: ${{github.token}}
-        script: |
-          github.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: '👋 Thanks for reporting!'
-          })
+#   test_basic_success:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v1
 
-  test_basic_success_with_output:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        #token: ${{ secrets.TEST }}
-        name: Test Basic Success (Implicit)
-        conclusion: success
-        output: |
-          {"summary":"Test was a success","text_description":"This is a text description of the annotations and images\nWith more stuff\nAnd more"}
+#       run: |
+#         chmod
+        
+#     - uses: actions/github-script@v3
+#       with:
+#         github-token: ${{github.token}}
+#         script: |
+#           github.issues.createComment({
+#             issue_number: context.issue.number,
+#             owner: context.repo.owner,
+#             repo: context.repo.repo,
+#             body: '👋 Thanks for reporting!'
+#           })
+
+#   test_basic_success_with_output:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v1
+#       with:
+#         #token: ${{ secrets.TEST }}
+#         name: Test Basic Success (Implicit)
+#         conclusion: success
+#         output: |
+#           {"summary":"Test was a success","text_description":"This is a text description of the annotations and images\nWith more stuff\nAnd more"}
+          
+jobs:
+
+  build:
+      runs-on: ubuntu-latest
+      continue-on-error: true
+      steps:
+        - name: Check out repository
+          id: checkout
+          uses: actions/checkout@v2
+
+        - name: create a failure
+          id: failure_step
+          run: |
+            ! echo "Hello"
+
+        - name: Check failure here
+          #if: ${{ success() }}
+          if: ${{ steps.failure_step.outcome == 'failure'  }}
+          uses: actions/github-script@v3
+            with:
+              github-token: ${{github.token}}
+              script: |
+                github.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: '🚨 The Unit tests run failed'
+                })
