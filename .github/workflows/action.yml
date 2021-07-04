@@ -52,7 +52,7 @@ jobs:
 
         - name: Check failure here
           #if: ${{ failure() }}
-          if: steps.failure_step.outcome == 'failure'
+          if: steps.failure_step.conclusion == 'failure'
           uses: actions/github-script@v3
           with:
             github-token: ${{github.token}}
