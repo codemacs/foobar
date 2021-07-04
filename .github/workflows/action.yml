@@ -54,12 +54,12 @@ jobs:
           #if: ${{ success() }}
           if: ${{ steps.failure_step.outcome == 'failure'  }}
           uses: actions/github-script@v3
-            with:
-              github-token: ${{github.token}}
-              script: |
-                github.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: '🚨 The Unit tests run failed'
-                })
+          with:
+            github-token: ${{github.token}}
+            script: |
+              github.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '🚨 The Unit tests run failed'
+              })
