@@ -51,8 +51,8 @@ jobs:
             ! echo "Hello"
 
         - name: Check failure here
-          #if: ${{ success() }}
-          if: ${{ steps.failure_step.outcome == 'failure'  }}
+          if: ${{ failure() }}
+          #if: ${{ steps.failure_step.outcome == 'failure'  }}
           uses: actions/github-script@v3
           with:
             github-token: ${{github.token}}
