@@ -48,7 +48,7 @@ jobs:
         - name: create a failure
           id: failure_step
           run: |
-            echo "Hello"
+            ! echo "Hello"
             echo ::set-output name=exit_status::$?
 
         - name: Check failure here
