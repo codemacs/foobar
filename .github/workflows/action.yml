@@ -48,13 +48,13 @@ jobs:
         - name: create a failure
           id: failure_step
           run: |
-            ! echo "Hello"
+            echo "Hello"
             echo ::set-output name=exit_status::$?
 
         - name: Check failure here
-          #if: ${{ failure() }}
-          #if: steps.failure_step.conclusion == 'failure'
-          if: steps.failure_step.outputs.exit_status != 0 
+          if: ${{ failure() }}
+#           if: steps.failure_step.conclusion == 'failure'
+#           if: steps.failure_step.outputs.exit_status != 0 
           uses: actions/github-script@v3
           with:
             github-token: ${{github.token}}
@@ -64,4 +64,19 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 body: '🚨 The Unit tests run failed'
+              })
+        
+        - name: Check Pass here
+          if: ${{ success() }}
+#           if: steps.failure_step.conclusion == 'failure'
+#           if: steps.failure_step.outputs.exit_status != 0 
+          uses: actions/github-script@v3
+          with:
+            github-token: ${{github.token}}
+            script: |
+              github.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '🚨 The Unit tests run passed'
               })
