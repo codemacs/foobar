@@ -48,8 +48,21 @@ jobs:
         - name: create a failure
           id: failure_step
           run: |
-            ! echo "Hello"
+            echo "Hello"
             echo ::set-output name=exit_status::$?
+            
+        - name: Add comment to PR
+        if: ${{ success() }}
+        env:
+          URL: ${{ github.event.pull_request.comments_url }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          curl \
+            -X POST \
+            $URL \
+            -H "Content-Type: application/json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            --data '{ "body": "✅ The Codebuild Job to update the lambda function and layers has completed successfully ✅" }'
 
         - name: Check failure here
           #if: ${{ failure() }}
