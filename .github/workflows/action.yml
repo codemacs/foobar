@@ -1,5 +1,7 @@
 name: "examples"
-on: [pull_request]
+on:
+  push:
+    branches: [master]
 
 #jobs:
   # make sure the action works on a clean machines without building
@@ -47,14 +49,18 @@ jobs:
 
         - name: create a failure
           id: failure_step
+          env:
+            PR: ${{ github.event.pull_request.comments_url }}
           run: |
-            ! echo "Hello"
-            echo ::set-output name=exit_status::$?
+            echo "Hello"
+            echo ${{ env.PR }}
+            echo $?
+
 
         - name: Check failure here
-          #if: ${{ failure() }}
-          #if: steps.failure_step.conclusion == 'failure'
-          if: steps.failure_step.outputs.exit_status != 0 
+          if: ${{ failure() }}
+#           if: steps.failure_step.conclusion == 'failure'
+#           if: steps.failure_step.outputs.exit_status != 0 
           uses: actions/github-script@v3
           with:
             github-token: ${{github.token}}
@@ -65,3 +71,4 @@ jobs:
                 repo: context.repo.repo,
                 body: '🚨 The Unit tests run failed'
               })
+        
