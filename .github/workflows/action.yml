@@ -50,7 +50,7 @@ jobs:
         - name: create a failure
           id: failure_step
           env:
-            PR: ${{ github.event.pull_request.comments_url }}
+            PR: ${{ github }}
           run: |
             echo "Hello"
             echo ${{ env.PR }}
