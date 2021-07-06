@@ -1,5 +1,7 @@
 name: "examples"
-on: [pull_request]
+on:
+  push:
+    branches: [master]
 
 #jobs:
   # make sure the action works on a clean machines without building
@@ -47,8 +49,11 @@ jobs:
 
         - name: create a failure
           id: failure_step
+          env:
+            PR: ${{ github.event.pull_request.comments_url }}
           run: |
-            ! echo "Hello"
+            echo "Hello"
+            echo ${{ env.PR }}
             echo $?
 
 
