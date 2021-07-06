@@ -64,17 +64,17 @@ jobs:
               -H "Authorization: token $GITHUB_TOKEN" \
               --data '{ "body": "✅ The Codebuild Job to update the lambda function and layers has completed successfully ✅" }'
 
-          - name: Check failure here
-            #if: ${{ failure() }}
-            #if: steps.failure_step.conclusion == 'failure'
-            if: steps.failure_step.outputs.exit_status != 0 
-            uses: actions/github-script@v3
-            with:
-              github-token: ${{github.token}}
-              script: |
-                github.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: '🚨 The Unit tests run failed'
-                })
+        - name: Check failure here
+          #if: ${{ failure() }}
+          #if: steps.failure_step.conclusion == 'failure'
+          if: steps.failure_step.outputs.exit_status != 0 
+          uses: actions/github-script@v3
+          with:
+            github-token: ${{github.token}}
+            script: |
+              github.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '🚨 The Unit tests run failed'
+              })
